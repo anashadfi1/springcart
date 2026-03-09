@@ -28,5 +28,8 @@ public class OrderModel {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
+    @ManyToOne  // or @ManyToOne if user can have multiple orders
+    @JoinColumn(name = "user_id")
+    private UserModel user;
     // getters and setters
 }

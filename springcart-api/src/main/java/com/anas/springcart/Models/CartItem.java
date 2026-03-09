@@ -1,7 +1,13 @@
 package com.anas.springcart.Models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "cart_items")
 public class CartItem {
@@ -20,30 +26,4 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private CartModel cart;
 
-    public CartItem() {
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public ProductModel getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductModel product) {
-        this.product = product;
-    }
-
-    public CartModel getCart() {
-        return cart;
-    }
-
-    public void setCart(CartModel cart) {
-        this.cart = cart;
-    }
 }

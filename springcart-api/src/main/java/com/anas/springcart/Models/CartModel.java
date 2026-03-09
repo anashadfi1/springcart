@@ -20,6 +20,9 @@ public class CartModel {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> items;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 
     // optional
     private Double totalPrice;
