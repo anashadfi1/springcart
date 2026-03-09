@@ -1,11 +1,10 @@
 
-<h1>Hello and welcome to the actual project description of my full stack e-commerce plateform</h1>  <br/> 
-<p> Spring cart isbuilt With Javas spring framework for the backend, and Angular for the frontend.
-springcart is an e-commerce plateform to sell electronic items, with a role based authorization system with Java Spring Security
-Java Spring Boot for server side http requests, and a fully featured user experience with Angula  </p>
+<h1>Hello and welcome! this is spring-cart project description</h1>  <br/> 
+<p> SpringCart is an e-commerce platform designed for selling electronic items. It is developed using the Spring Framework (specifically Spring Boot and Spring Security) for the backend and Angular for the frontend.<br/> <br/>
+The application implements a role-based authorization system using Spring Security to manage user access and permissions. Backend services and HTTP request handling are built with Spring Boot, while the frontend provides a fully interactive and feature-rich user experience through Angular. </p>
 <div>
 <div>
-<div class='flex'>
+<div>
     <h3>Here is Our Angular login page user interface</h4>
     <img src="springcart-ui/images/login-page.png" alt = "login-screenshot"/>
 </div>
