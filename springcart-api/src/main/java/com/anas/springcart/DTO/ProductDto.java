@@ -26,4 +26,7 @@ public class ProductDto {
     private LocalDateTime date;
     private List<ProductSpecificationDto> specifications;
 
+
+    
+
 }
