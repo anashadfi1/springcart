@@ -25,8 +25,4 @@ public class ProductDto {
     private String description;
     private LocalDateTime date;
     private List<ProductSpecificationDto> specifications;
-
-
-    
-
 }

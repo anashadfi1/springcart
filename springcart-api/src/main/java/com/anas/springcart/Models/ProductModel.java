@@ -51,4 +51,7 @@ public class ProductModel {
     @JoinColumn(name = "category_id")
     @JsonBackReference
     private CategoryModel category;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private UserModel seller;
 }
