@@ -1,29 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CartService } from '../../services/cart';
-import { ProductService } from '../../services/product';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+export interface NavLink {
+  label: string;
+  path: string;
+  active?: boolean;
+}
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
 })
 export class NavbarComponent {
-  searchQuery = '';
+  @Input() cartCount     = 0;
+  @Input() wishlistCount = 0;
 
-  constructor(
-    public cartService: CartService,
-    private productService: ProductService,
-    private router: Router
-  ) {}
+  @Output() searchChanged = new EventEmitter<string>();
 
-  onSearch() {
-    if (this.searchQuery.trim()) {
-      this.router.navigate(['/products'], { queryParams: { search: this.searchQuery } });
-    }
+  searchQuery    = '';
+  mobileMenuOpen = false;
+
+  navLinks: NavLink[] = [
+    { label: 'Products', path: '/products' },
+    { label: 'Deals',    path: '/deals'    },
+    { label: 'Brands',   path: '/brands'   },
+    { label: 'Support',  path: '/support'  },
+  ];
+
+  onSearchChange(query: string): void {
+    this.searchChanged.emit(query);
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 }

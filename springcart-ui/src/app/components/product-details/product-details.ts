@@ -1,55 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { NavbarComponent } from '../navbar/navbar';
-import { ProductCardComponent } from '../product-card/product-card';
-import { ProductService } from '../../services/product';
-import { CartService } from '../../services/cart';
 import { Product } from '../../models/Product.model';
 
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
 @Component({
-  selector: 'app-product-detail',
+  selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, NavbarComponent, ProductCardComponent],
+  imports: [CommonModule],
   templateUrl: './product-details.html',
 })
-export class ProductDetailComponent implements OnInit {
-  product?: Product;
-  related: Product[] = [];
-  added = false;
+export class ProductDetailsComponent implements OnChanges {
+  @Input()  product: Product | null = null;
+
+  @Output() closed          = new EventEmitter<void>();
+  @Output() addedToCart     = new EventEmitter<CartItem>();
+  @Output() wishlistToggled = new EventEmitter<Product>();
+
   quantity = 1;
 
-  constructor(
-    private route: ActivatedRoute,
-    private productService: ProductService,
-    public cartService: CartService
-  ) {}
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.product = this.productService.getById(+params['id']);
-      if (this.product) {
-        this.related = this.productService
-          .getByCategory(this.product.category)
-          .filter(p => p.id !== this.product!.id)
-          .slice(0, 4);
-      }
-    });
+  ngOnChanges(): void {
+    // Reset quantity whenever a new product is shown
+    this.quantity = 1;
   }
 
-  addToCart() {
+  increment(): void {
+    this.quantity = Math.min(this.quantity + 1, 99);
+  }
+
+  decrement(): void {
+    this.quantity = Math.max(this.quantity - 1, 1);
+  }
+
+  onAddToCart(): void {
+    if (!this.product || !this.product.inStock) return;
+    this.addedToCart.emit({ product: this.product, quantity: this.quantity });
+  }
+
+  onWishlistToggle(): void {
     if (!this.product) return;
-    for (let i = 0; i < this.quantity; i++) this.cartService.add(this.product);
-    this.added = true;
-    setTimeout(() => this.added = false, 1500);
+    this.product.wishlisted = !this.product.wishlisted;
+    this.wishlistToggled.emit(this.product);
   }
 
-  get discount(): number {
-    if (!this.product?.originalPrice) return 0;
-    return Math.round((1 - this.product.price / this.product.originalPrice) * 100);
-  }
-
-  specKeys(): string[] {
-    return this.product ? Object.keys(this.product.specs) : [];
+  onClose(): void {
+    this.closed.emit();
   }
 }

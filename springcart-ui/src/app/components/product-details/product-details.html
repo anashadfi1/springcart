@@ -1,81 +1,199 @@
-<div class="min-h-screen bg-slate-950">
-  <app-navbar></app-navbar>
+<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-0 sm:px-4"
+     style="font-family: 'DM Sans', sans-serif;"
+     *ngIf="product">
 
-  @if (product) {
-    <div class="max-w-6xl mx-auto px-4 py-8">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-[#080c14]/90 backdrop-blur-md" (click)="onClose()"></div>
 
-      <!-- Breadcrumb -->
-      <nav class="text-sm text-slate-400 mb-6">
-        <a routerLink="/products" class="hover:text-orange-500 transition">Products</a>
-        <span class="mx-2">/</span>
-        <span class="text-slate-300">{{ product.name }}</span>
-      </nav>
+  <!-- Panel -->
+  <div class="relative w-full sm:max-w-3xl max-h-[92vh] overflow-y-auto
+              bg-[#0d1424] border border-slate-700/40 rounded-t-2xl sm:rounded-2xl
+              shadow-2xl shadow-black/60 animate-slide-up">
 
-      <!-- Product -->
-      <div class="bg-slate-800 rounded-2xl border border-white/10 p-6 flex flex-col md:flex-row gap-8">
-        <div class="w-full md:w-96 flex-shrink-0 bg-slate-700 rounded-xl overflow-hidden h-80">
-          <img [src]="product.image" [alt]="product.name" class="w-full h-full object-cover"/>
+    <!-- Close button -->
+    <button (click)="onClose()"
+      class="absolute top-4 right-4 z-10 w-8 h-8 rounded-xl bg-slate-800/80 border border-slate-700/50
+             hover:border-slate-600 flex items-center justify-center transition-all duration-150">
+      <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="grid sm:grid-cols-2 gap-0">
+
+      <!-- ── Left: Visual ── -->
+      <div class="relative bg-gradient-to-br from-[#0a1120] to-[#0d1930] flex flex-col items-center justify-center
+                  p-10 rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none min-h-[260px] overflow-hidden">
+        <!-- Ambient glow -->
+        <div class="absolute inset-0 pointer-events-none"
+             style="background: radial-gradient(ellipse at center, rgba(59,130,246,0.12) 0%, transparent 70%);">
+        </div>
+        <!-- Diagonal texture -->
+        <div class="absolute inset-0 opacity-[0.03]"
+             style="background: repeating-linear-gradient(135deg, #3b82f6 0px, #3b82f6 1px, transparent 1px, transparent 32px);">
         </div>
 
-        <div class="flex-1">
-          <p class="text-sm text-orange-500 font-semibold uppercase">{{ product.brand }}</p>
-          <h1 class="text-2xl font-bold text-white mt-1">{{ product.name }}</h1>
+        <!-- Badge -->
+        <div *ngIf="product.badge"
+             class="absolute top-4 left-4 px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-widest uppercase border"
+             [ngClass]="{
+               'bg-blue-500/20 border-blue-500/30 text-blue-400'    : product.badge === 'New',
+               'bg-red-500/20  border-red-500/30  text-red-400'     : product.badge === 'Sale',
+               'bg-amber-500/20 border-amber-500/30 text-amber-400' : product.badge === 'Hot'
+             }">{{ product.badge }}</div>
 
-          <div class="flex items-center gap-2 mt-2">
-            <span class="text-orange-400">★★★★★</span>
-            <span class="text-sm font-medium text-slate-300">{{ product.rating }}</span>
-            <span class="text-sm text-slate-400">({{ product.reviews }} reviews)</span>
+        <!-- Product icon -->
+        <div class="relative z-10 mb-4">
+          <div class="w-28 h-28 rounded-3xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center
+                      shadow-xl shadow-blue-900/30">
+            <svg class="w-14 h-14 text-blue-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="product.icon" />
+            </svg>
           </div>
+        </div>
 
-          <div class="flex items-center gap-3 mt-4">
-            <span class="text-3xl font-bold text-white">${{ product.price }}</span>
-            @if (product.originalPrice) {
-              <span class="text-lg text-slate-400 line-through">${{ product.originalPrice }}</span>
-            }
-            @if (discount > 0) {
-              <span class="bg-green-500/20 text-green-400 text-sm font-bold px-2 py-1 rounded-full">-{{ discount }}%</span>
-            }
+        <!-- Brand -->
+        <span class="relative z-10 text-xs tracking-widest uppercase text-slate-600 font-medium"
+              style="font-family: 'Rajdhani', sans-serif;">
+          {{ product.brand }}
+        </span>
+
+        <!-- Stock indicator -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full"
+                [ngClass]="product.inStock ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'"></span>
+          <span class="text-[10px] tracking-widest uppercase"
+                [ngClass]="product.inStock ? 'text-emerald-400/70' : 'text-slate-600'">
+            {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+          </span>
+        </div>
+
+        <!-- Bottom shimmer -->
+        <div class="absolute bottom-0 right-0 sm:bottom-auto sm:right-0 sm:top-0
+                    w-full h-px sm:w-px sm:h-full
+                    bg-gradient-to-r sm:bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"></div>
+      </div>
+
+      <!-- ── Right: Details ── -->
+      <div class="p-7 flex flex-col">
+        <!-- Name -->
+        <div class="mb-5 pr-8">
+          <p class="text-[10px] text-slate-600 tracking-widest uppercase mb-1.5">{{ product.brand }}</p>
+          <h2 class="text-xl font-semibold text-white leading-snug"
+              style="font-family: 'Rajdhani', sans-serif; letter-spacing: 0.05em;">
+            {{ product.name }}
+          </h2>
+        </div>
+
+        <!-- Rating -->
+        <div class="flex items-center gap-2 mb-5">
+          <div class="flex items-center gap-0.5">
+            <svg *ngFor="let s of [1,2,3,4,5]" class="w-3.5 h-3.5"
+                 [ngClass]="s <= product.rating ? 'text-amber-400' : 'text-slate-700'"
+                 fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
           </div>
+          <span class="text-xs text-slate-500">{{ product.rating }}.0</span>
+          <span class="text-slate-700 text-xs">·</span>
+          <span class="text-xs text-slate-600">{{ product.reviews | number }} reviews</span>
+        </div>
 
-          <p class="text-slate-400 mt-4 text-sm leading-relaxed">{{ product.description }}</p>
+        <!-- Description -->
+        <p class="text-sm text-slate-500 leading-relaxed mb-5">{{ product.description }}</p>
 
-          <div class="mt-5 grid grid-cols-2 gap-2">
-            @for (key of specKeys(); track key) {
-              <div class="bg-white/5 rounded-lg px-3 py-2">
-                <p class="text-xs text-slate-400">{{ key }}</p>
-                <p class="text-sm font-semibold text-white">{{ product.specs[key] }}</p>
-              </div>
-            }
-          </div>
-
-          <div class="flex items-center gap-4 mt-6">
-            <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2">
-              <button (click)="quantity = quantity > 1 ? quantity - 1 : 1"
-                class="text-white font-bold hover:text-orange-500 transition">−</button>
-              <span class="w-6 text-center text-white font-semibold">{{ quantity }}</span>
-              <button (click)="quantity = quantity + 1"
-                class="text-white font-bold hover:text-orange-500 transition">+</button>
+        <!-- Specs -->
+        <div class="mb-6">
+          <p class="text-[10px] text-slate-600 tracking-widest uppercase mb-2.5">Specifications</p>
+          <div class="grid grid-cols-2 gap-2">
+            <div *ngFor="let spec of product.specs"
+                 class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/50 border border-slate-700/40">
+              <div class="w-1 h-1 rounded-full bg-blue-500 shrink-0"></div>
+              <span class="text-xs text-slate-400">{{ spec }}</span>
             </div>
-            <button (click)="addToCart()"
-              class="flex-1 py-3 rounded-xl font-bold transition duration-200"
-              [class]="added ? 'bg-green-500 text-white' : 'bg-orange-500 hover:bg-orange-400 text-white'">
-              {{ added ? '✓ Added to Cart!' : 'Add to Cart' }}
+          </div>
+        </div>
+
+        <!-- Spacer -->
+        <div class="flex-1"></div>
+
+        <!-- Price section -->
+        <div class="border-t border-slate-700/40 pt-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold text-white" style="font-family: 'Rajdhani', sans-serif;">
+                  ${{ product.price | number:'1.2-2' }}
+                </span>
+                <span *ngIf="product.originalPrice" class="text-sm text-slate-600 line-through">
+                  ${{ product.originalPrice | number:'1.2-2' }}
+                </span>
+              </div>
+              <span *ngIf="product.originalPrice" class="text-xs text-emerald-400 font-medium">
+                You save ${{ (product.originalPrice - product.price) | number:'1.2-2' }}
+              </span>
+            </div>
+            <!-- Wishlist toggle -->
+            <button (click)="onWishlistToggle()"
+              class="w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-200"
+              [ngClass]="product.wishlisted
+                ? 'bg-red-500/15 border-red-500/40 text-red-400'
+                : 'bg-slate-800/50 border-slate-700/40 text-slate-500 hover:border-red-500/30 hover:text-red-400'">
+              <svg class="w-4 h-4" [ngClass]="product.wishlisted ? 'fill-red-400' : 'fill-none'"
+                   viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Quantity + Add to cart -->
+          <div class="flex items-center gap-3">
+            <!-- Quantity -->
+            <div class="flex items-center gap-2 bg-[#0a1120] border border-slate-700/50 rounded-xl px-3 py-2">
+              <button (click)="decrement()"
+                class="w-5 h-5 rounded-md bg-slate-700/60 hover:bg-slate-700 flex items-center justify-center transition-colors duration-150 text-slate-400 hover:text-white">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                </svg>
+              </button>
+              <span class="text-sm text-white font-medium w-5 text-center" style="font-family: 'Rajdhani', sans-serif;">
+                {{ quantity }}
+              </span>
+              <button (click)="increment()"
+                class="w-5 h-5 rounded-md bg-slate-700/60 hover:bg-blue-600/50 flex items-center justify-center transition-colors duration-150 text-slate-400 hover:text-blue-400">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Add to cart CTA -->
+            <button (click)="onAddToCart()"
+              [disabled]="!product.inStock"
+              class="relative flex-1 flex items-center justify-center gap-2 py-3 rounded-xl
+                     bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed
+                     text-white text-sm font-medium tracking-wider uppercase
+                     shadow-lg shadow-blue-900/30 transition-all duration-200 overflow-hidden group">
+              <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700
+                          bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
+              <svg class="w-4 h-4 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+              </svg>
+              <span class="relative">{{ product.inStock ? 'Add to Cart' : 'Unavailable' }}</span>
             </button>
           </div>
         </div>
       </div>
-
-      <!-- Related -->
-      @if (related.length > 0) {
-        <div class="mt-10">
-          <h2 class="text-xl font-bold text-white mb-4">Related Products</h2>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            @for (p of related; track p.id) {
-              <app-product-card [product]="p"></app-product-card>
-            }
-          </div>
-        </div>
-      }
     </div>
-  }
+  </div>
 </div>
+
+<style>
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-up { animation: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+</style>

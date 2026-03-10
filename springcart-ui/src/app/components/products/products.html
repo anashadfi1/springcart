@@ -1,0 +1,337 @@
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+<div class="min-h-screen bg-[#080c14] text-slate-200 overflow-x-hidden" style="font-family: 'DM Sans', sans-serif;">
+
+  <!-- ── Ambient Background ── -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="absolute top-0 left-1/4 w-[700px] h-[400px] rounded-full bg-blue-600/8 blur-[130px]"></div>
+    <div class="absolute bottom-1/3 right-0 w-[500px] h-[500px] rounded-full bg-blue-800/6 blur-[120px]"></div>
+    <div class="absolute inset-0 opacity-[0.025]"
+      style="background-image: linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(to right, #3b82f6 1px, transparent 1px); background-size: 48px 48px;"></div>
+  </div>
+
+  <!-- ── Navbar ── -->
+  <header class="relative z-50 border-b border-slate-700/30 backdrop-blur-xl bg-[#080c14]/80 sticky top-0">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
+          <svg class="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+          </svg>
+        </div>
+        <span class="text-lg font-semibold tracking-[0.15em] uppercase text-white" style="font-family: 'Rajdhani', sans-serif;">
+          SpringCart
+        </span>
+      </div>
+
+      <!-- Nav links (desktop) -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#" class="text-sm text-blue-400 font-medium tracking-wide">Products</a>
+        <a href="#" class="text-sm text-slate-500 hover:text-slate-300 transition-colors duration-150 tracking-wide">Deals</a>
+        <a href="#" class="text-sm text-slate-500 hover:text-slate-300 transition-colors duration-150 tracking-wide">Brands</a>
+        <a href="#" class="text-sm text-slate-500 hover:text-slate-300 transition-colors duration-150 tracking-wide">Support</a>
+      </nav>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-3">
+        <!-- Search -->
+        <div class="hidden sm:flex items-center gap-2 bg-[#0d1424] border border-slate-700/50 rounded-xl px-3 py-2 w-48 focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20 transition-all duration-200">
+          <svg class="w-3.5 h-3.5 text-slate-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="onSearch()"
+            placeholder="Search devices…"
+            class="bg-transparent text-sm text-slate-300 placeholder-slate-600 focus:outline-none w-full"
+          />
+        </div>
+        <!-- Cart -->
+        <button class="relative w-9 h-9 rounded-xl bg-[#0d1424] border border-slate-700/50 hover:border-slate-600 flex items-center justify-center transition-all duration-200 group">
+          <svg class="w-4 h-4 text-slate-400 group-hover:text-slate-200 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+          </svg>
+          <span *ngIf="cartCount > 0"
+            class="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+            {{ cartCount }}
+          </span>
+        </button>
+        <!-- Login -->
+        <a routerLink="/login"
+          class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium tracking-widest uppercase px-4 py-2 rounded-xl border border-slate-700/60 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 transition-all duration-200">
+          Sign In
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-6 py-10">
+
+    <!-- ── Hero Banner ── -->
+    <section class="relative rounded-2xl overflow-hidden mb-12 border border-slate-700/30 bg-[#0d1424]/60 animate-fade-in">
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-0 right-0 w-[500px] h-[300px] bg-blue-600/10 blur-[80px] rounded-full"></div>
+        <div class="absolute bottom-0 left-0 w-[300px] h-[200px] bg-blue-900/15 blur-[60px] rounded-full"></div>
+        <!-- Diagonal accent line -->
+        <div class="absolute inset-0 opacity-5"
+          style="background: repeating-linear-gradient(135deg, #3b82f6 0px, #3b82f6 1px, transparent 1px, transparent 40px);">
+        </div>
+      </div>
+      <div class="relative px-10 py-14 md:py-16 flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-1">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs tracking-widest uppercase font-medium mb-5">
+            <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+            New Arrivals 2025
+          </div>
+          <h2 class="text-4xl md:text-5xl font-light text-white leading-tight mb-4" style="font-family: 'Rajdhani', sans-serif; letter-spacing: 0.05em;">
+            Next-Gen<br/>
+            <span class="text-blue-400">Electronics</span>
+          </h2>
+          <p class="text-slate-500 text-sm leading-relaxed max-w-md mb-7">
+            Explore the latest laptops, smartphones, audio gear and accessories — curated for performance enthusiasts.
+          </p>
+          <button class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium tracking-wider uppercase transition-all duration-200 shadow-lg shadow-blue-900/40 group overflow-hidden relative">
+            <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
+            <span class="relative">Shop Now</span>
+            <svg class="w-4 h-4 relative group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
+        </div>
+        <!-- Stats -->
+        <div class="flex md:flex-col gap-6 md:gap-4 shrink-0">
+          <div *ngFor="let stat of stats" class="text-center md:text-right">
+            <div class="text-2xl font-light text-blue-400" style="font-family: 'Rajdhani', sans-serif;">{{ stat.value }}</div>
+            <div class="text-xs text-slate-600 tracking-widest uppercase mt-0.5">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Filters & Controls ── -->
+    <section class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+
+      <!-- Category pills -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <button
+          *ngFor="let cat of categories"
+          (click)="selectCategory(cat.key)"
+          class="px-4 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all duration-200 border"
+          [ngClass]="selectedCategory === cat.key
+            ? 'bg-blue-600/20 border-blue-500/50 text-blue-400'
+            : 'bg-transparent border-slate-700/50 text-slate-500 hover:border-slate-600 hover:text-slate-400'">
+          {{ cat.label }}
+        </button>
+      </div>
+
+      <!-- Sort + view toggle -->
+      <div class="flex items-center gap-3 shrink-0">
+        <select
+          [(ngModel)]="sortBy"
+          (ngModelChange)="onSort()"
+          class="bg-[#0d1424] border border-slate-700/50 rounded-xl px-3 py-2 text-xs text-slate-400 focus:outline-none focus:border-blue-500/50 transition-all duration-200 appearance-none pr-7 cursor-pointer"
+          style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%2364748b%22><path stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 12px;">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">Newest</option>
+        </select>
+        <!-- Grid toggle -->
+        <div class="flex items-center gap-1 bg-[#0d1424] border border-slate-700/50 rounded-xl p-1">
+          <button (click)="gridCols = 3"
+            class="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150"
+            [ngClass]="gridCols === 3 ? 'bg-blue-600/30 text-blue-400' : 'text-slate-600 hover:text-slate-400'">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 16 16">
+              <rect x="1" y="1" width="4" height="4" rx="0.5"/><rect x="6" y="1" width="4" height="4" rx="0.5"/><rect x="11" y="1" width="4" height="4" rx="0.5"/>
+              <rect x="1" y="6" width="4" height="4" rx="0.5"/><rect x="6" y="6" width="4" height="4" rx="0.5"/><rect x="11" y="6" width="4" height="4" rx="0.5"/>
+              <rect x="1" y="11" width="4" height="4" rx="0.5"/><rect x="6" y="11" width="4" height="4" rx="0.5"/><rect x="11" y="11" width="4" height="4" rx="0.5"/>
+            </svg>
+          </button>
+          <button (click)="gridCols = 2"
+            class="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150"
+            [ngClass]="gridCols === 2 ? 'bg-blue-600/30 text-blue-400' : 'text-slate-600 hover:text-slate-400'">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 16 16">
+              <rect x="1" y="1" width="6" height="6" rx="0.5"/><rect x="9" y="1" width="6" height="6" rx="0.5"/>
+              <rect x="1" y="9" width="6" height="6" rx="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Product Grid ── -->
+    <section
+      class="grid gap-5 animate-fade-in"
+      [ngClass]="gridCols === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'"
+      style="animation-delay: 0.2s;">
+
+      <div
+        *ngFor="let product of filteredProducts; let i = index"
+        class="group relative bg-[#0d1424]/70 border border-slate-700/40 rounded-2xl overflow-hidden
+               hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-900/20
+               transition-all duration-300 cursor-pointer animate-fade-in"
+        [style.animation-delay]="(i * 0.05) + 's'">
+
+        <!-- Badge -->
+        <div *ngIf="product.badge"
+          class="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-widest uppercase"
+          [ngClass]="{
+            'bg-blue-500/20 border border-blue-500/30 text-blue-400': product.badge === 'New',
+            'bg-red-500/20 border border-red-500/30 text-red-400': product.badge === 'Sale',
+            'bg-amber-500/20 border border-amber-500/30 text-amber-400': product.badge === 'Hot'
+          }">
+          {{ product.badge }}
+        </div>
+
+        <!-- Wishlist -->
+        <button (click)="toggleWishlist(product); $event.stopPropagation()"
+          class="absolute top-3 right-3 z-10 w-8 h-8 rounded-xl bg-[#080c14]/80 border border-slate-700/50
+                 hover:border-red-500/40 flex items-center justify-center
+                 transition-all duration-200 opacity-0 group-hover:opacity-100">
+          <svg class="w-3.5 h-3.5 transition-colors duration-150"
+            [ngClass]="product.wishlisted ? 'text-red-400 fill-red-400' : 'text-slate-500'"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>
+        </button>
+
+        <!-- Product image area -->
+        <div class="relative h-52 bg-gradient-to-br from-[#0a1120] to-[#0d1930] flex items-center justify-center overflow-hidden">
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style="background: radial-gradient(ellipse at center, rgba(59,130,246,0.08) 0%, transparent 70%);">
+          </div>
+          <!-- Product icon placeholder -->
+          <div class="relative z-10 transform group-hover:scale-110 transition-transform duration-500">
+            <div class="w-24 h-24 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center shadow-lg shadow-blue-900/20">
+              <svg class="w-12 h-12 text-blue-400/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="product.icon" />
+              </svg>
+            </div>
+          </div>
+          <!-- Shimmer line at bottom -->
+          <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
+        </div>
+
+        <!-- Product info -->
+        <div class="p-5">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div>
+              <p class="text-[10px] text-slate-600 tracking-widest uppercase mb-1">{{ product.brand }}</p>
+              <h3 class="text-sm font-medium text-slate-200 leading-snug group-hover:text-white transition-colors duration-150">
+                {{ product.name }}
+              </h3>
+            </div>
+          </div>
+
+          <!-- Rating -->
+          <div class="flex items-center gap-1.5 mb-3">
+            <div class="flex items-center gap-0.5">
+              <ng-container *ngFor="let star of [1,2,3,4,5]">
+                <svg class="w-3 h-3" [ngClass]="star <= product.rating ? 'text-amber-400' : 'text-slate-700'"
+                  fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              </ng-container>
+            </div>
+            <span class="text-[10px] text-slate-600">({{ product.reviews }})</span>
+          </div>
+
+          <!-- Specs chips -->
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span *ngFor="let spec of product.specs"
+              class="px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/40 text-[10px] text-slate-500 tracking-wide">
+              {{ spec }}
+            </span>
+          </div>
+
+          <!-- Price + CTA -->
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-lg font-semibold text-white" style="font-family: 'Rajdhani', sans-serif;">
+                  ${{ product.price.toFixed(2) }}
+                </span>
+                <span *ngIf="product.originalPrice" class="text-xs text-slate-600 line-through">
+                  ${{ product.originalPrice.toFixed(2) }}
+                </span>
+              </div>
+              <span *ngIf="product.originalPrice" class="text-[10px] text-emerald-400 font-medium">
+                Save ${{ (product.originalPrice - product.price).toFixed(2) }}
+              </span>
+            </div>
+            <button (click)="addToCart(product)"
+              class="relative flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600/20 border border-blue-500/30
+                     hover:bg-blue-600 hover:border-blue-500 text-blue-400 hover:text-white
+                     text-xs font-medium tracking-wide uppercase
+                     transition-all duration-200 overflow-hidden group/btn">
+              <div class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+              <svg class="w-3.5 h-3.5 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+              </svg>
+              <span class="relative">Add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div *ngIf="filteredProducts.length === 0"
+        class="col-span-full flex flex-col items-center justify-center py-24 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-slate-800/60 border border-slate-700/40 flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </div>
+        <p class="text-slate-500 text-sm">No products found for <span class="text-blue-400">"{{ searchQuery }}"</span></p>
+        <button (click)="clearSearch()" class="mt-3 text-xs text-slate-600 hover:text-slate-400 underline underline-offset-4 transition-colors">
+          Clear search
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Load more ── -->
+    <div *ngIf="filteredProducts.length > 0" class="flex justify-center mt-12">
+      <button class="flex items-center gap-2 px-8 py-3 rounded-xl border border-slate-700/50 hover:border-blue-500/40 text-slate-500 hover:text-blue-400 text-sm tracking-widest uppercase transition-all duration-200 group">
+        <span>Load More</span>
+        <svg class="w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="relative z-10 border-t border-slate-700/30 mt-16">
+    <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-semibold tracking-[0.15em] uppercase text-slate-600" style="font-family: 'Rajdhani', sans-serif;">Voltex</span>
+        <span class="text-slate-700 text-xs">© 2025</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#" class="text-xs text-slate-600 hover:text-slate-400 tracking-wide transition-colors">Privacy</a>
+        <a href="#" class="text-xs text-slate-600 hover:text-slate-400 tracking-wide transition-colors">Terms</a>
+        <a href="#" class="text-xs text-slate-600 hover:text-slate-400 tracking-wide transition-colors">Contact</a>
+      </div>
+      <div class="h-px w-full bg-gradient-to-r from-transparent via-blue-500/20 to-transparent sm:hidden"></div>
+    </div>
+  </footer>
+
+</div>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  select option { background-color: #0d1424; color: #94a3b8; }
+</style>
